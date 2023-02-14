@@ -4,6 +4,7 @@ import router from './router'
 import store from './store'
 import Element from 'element-ui'
 import './utils/api/axios.module'
+import 'highlight.js/styles/vs2015.css'
 Vue.config.productionTip = false
 
 Vue.use(Element)

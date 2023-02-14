@@ -8,8 +8,9 @@
             <li
                 v-for="(item, index) in navList"
                 :key="index"
-                @click="clickNavItem(item)"
-            >{{item}}</li>
+                :style="index === navIndex? 'backgroundColor: #eee': ''"
+                @click="clickNavItem(item, index)"
+            ><span class="text-log" v-show="index === navIndex"></span>{{item}}</li>
         </ul>
     </div>
 </template>
@@ -19,6 +20,7 @@ export default {
     data() {
         return {
             navList: [],
+            navIndex: 0, // 选中的index是多少
         };
     },
     mounted() {
@@ -28,10 +30,11 @@ export default {
         async getNavList() {
             let res = await this.axios.post("getMarkdownNavList");
             this.navList = res.data.data;
-            console.log("---res", res);
         },
-        clickNavItem(item){
-          console.log('0', item);
+        async clickNavItem(item, index){
+          this.navIndex = index
+          let res = await this.axios.post('/getMarkdown', {filename: item})
+          this.$emit('innerNote', res.data.data)
         }
     },
 };
@@ -57,10 +60,25 @@ export default {
     .nav-list{
       li{
         cursor: pointer;
-        height: 40px;
         width: 100%;
-        line-height: 40px;
+        height: 40px;
         padding-left: 10px;
+        box-sizing: border-box;
+        text-align: left;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        overflow:hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        -o-text-overflow:ellipsis;
+        .text-log{
+          width: 10px;
+          height: 100%;
+          background-color: #000;
+          display: inline-block;
+          margin: 0 20px 0 -10px;
+        }
       }
     }
 }
