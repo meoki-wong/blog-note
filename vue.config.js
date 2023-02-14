@@ -17,6 +17,7 @@ module.exports = {
     },
 
     devServer: {
+        port: 8091,
         headers: { 'Access-Control-Allow-Origin': '*' },
         hot: true,
         open: true,
